@@ -89,7 +89,17 @@ The terminal has some special behaviors:
 
 - When you type a command directly, it executes immediately
 - When you click on a command link, it simulates typing the command first
-- You can control animation settings in the `appearance.tsx` file
+- You can control appearance in the `appearance.tsx` file
+
+### 5. Future Features
+- [ ] Command autocompletion using TAB
+- [ ] Configurable theme (light/dark/system
+- [ ] Command `history` list output
+- [ ] Command alias system (e.g., `ls` for `help`)
+- [ ] Mobile responsive terminal view
+- [ ] Keyboard accessibility enhancements
+- [ ] Localization / language switch support
+- [ ] Download as `.pdf` resume command
 
 ## Tips for Non-Technical Users
 
