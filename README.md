@@ -17,7 +17,7 @@ To edit your CV content and add/modify commands:
 
 To add a new command, copy and paste one of the existing command objects and modify it:
 
-\`\`\`tsx
+```tsx
 {
   command: "your-command-name",  // What users will type to run it
   shortcut: "y",                 // Optional shortcut (can be omitted)
@@ -33,7 +33,7 @@ To add a new command, copy and paste one of the existing command objects and mod
     </div>
   `
 }
-\`\`\`
+```
 
 #### HTML Tags You Can Use
 
@@ -63,25 +63,25 @@ To change how your terminal looks:
 
 #### Example
 
-\`\`\`tsx
+```tsx
 // To change the terminal background color:
 background: "black", // Change to any color name or hex code like "#0f172a"
 
 // To change the prompt text:
 prompt: "user@portfolio:~$ ", // Change to whatever you prefer
-\`\`\`
+```
 
 ### 3. Boot Sequence Messages
 
 You can customize the boot sequence messages:
 
-\`\`\`tsx
+```tsx
 export const bootMessages = [
   { type: "ok", message: "Your custom boot message here..." },
   { type: "warn", message: "This will show as a warning message" },
   // Add more messages as needed
 ]
-\`\`\`
+```
 
 ### 4. Terminal Behavior
 
@@ -104,4 +104,4 @@ If you encounter any issues, you can:
 
 1. Restore from a backup
 2. Check for missing quotes, commas, or brackets
-3. Contact the developer who provided this template
+3. Contact me!
