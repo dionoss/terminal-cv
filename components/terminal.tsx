@@ -277,9 +277,9 @@ export default function Terminal() {
       ref={terminalRef}
       onClick={() => {
         if (terminalRef.current) {
-          const input = terminalRef.current.querySelector('input');
+          const input = terminalRef.current.querySelector('div[tabindex="0"]');
           if (input) {
-            input.focus();
+            (input as HTMLElement).focus();
           }
         }
       }}
@@ -315,6 +315,11 @@ export default function Terminal() {
                 commandColor={terminalAppearance.colors.commandText}
                 cursorColor={terminalAppearance.colors.defaultText}
                 cursorBlinkSpeed={terminalAppearance.terminal.cursorBlinkSpeed}
+                onFocus={() => {
+                  if (terminalRef.current) {
+                    terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+                  }
+                }}
               />
             </div>
           </div>
