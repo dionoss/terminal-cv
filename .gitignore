@@ -35,4 +35,8 @@ next-env.d.ts
 # IDE
 .vscode/
 .idea/
-.cursor/ 
+.cursor/
+
+# Obsidian
+.obsidianignore
+.obsidian/ 

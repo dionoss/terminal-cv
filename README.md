@@ -17,7 +17,7 @@ This Terminal CV is designed to be easily customizable even if you don't have an
 To edit your CV content and add/modify commands:
 
 1. Open the file `data/cv-content.tsx`
-2. Edit the existing commands or add new ones following the examples
+2. Edit the existing commands or add new ones following the examples.
 
 #### Adding a New Command
 
