@@ -39,4 +39,10 @@ next-env.d.ts
 
 # Obsidian
 .obsidianignore
+.obsidian/
+.obsidian.vimrc
+.obsidian.vim
+
+# Obsidian
+.obsidianignore
 .obsidian/ 
