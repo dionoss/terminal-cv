@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
+import type { ReactElement } from "react"
 import TerminalLine from "./terminal-line"
 import TerminalPrompt from "./terminal-prompt"
 import { commands, generateCommands } from "@/lib/commands"
@@ -9,7 +10,7 @@ import { terminalAppearance, advancedSettings } from "@/data/appearance"
 import { welcomeMessage } from "@/data/cv-content"
 
 export default function Terminal() {
-  const [history, setHistory] = useState<Array<{ type: string; content: string | JSX.Element }>>([])
+  const [history, setHistory] = useState<Array<{ type: string; content: string | ReactElement }>>([])
   const [booting, setBooting] = useState(terminalAppearance.showBootSequence)
   const [loggedIn, setLoggedIn] = useState(!terminalAppearance.showLoginSequence)
   const [bootStep, setBootStep] = useState(0)
@@ -41,7 +42,7 @@ export default function Terminal() {
     if (bootStep < bootSequence.length) {
       const timer = setTimeout(
         () => {
-          setHistory((prev) => [...prev, { type: "boot", content: bootSequence[bootStep] }])
+          setHistory((prev: Array<{ type: string; content: string | ReactElement }>) => [...prev, { type: "boot", content: bootSequence[bootStep] }])
           setBootStep(bootStep + 1)
         },
         Math.random() *
@@ -108,21 +109,25 @@ export default function Terminal() {
                 {
                   type: "system",
                   content: (
-                    <span>
-                      {welcomeMessage.replace(
-                        '"help"',
-                        <button
-                          onClick={() => simulateTyping("help")}
-                          className="text-yellow-400 hover:text-yellow-200 hover:underline cursor-pointer"
-                        >
-                          "help"
-                        </button>,
-                      )}
-                    </span>
+                    <div>
+                      Welcome user. Type or click{" "}
+                      <button
+                        onClick={() => simulateTyping("help")}
+                        className="text-yellow-400 hover:text-yellow-200 hover:underline cursor-pointer"
+                      >
+                        help
+                      </button>{" "}
+                      to see available commands.
+                    </div>
                   ),
                 },
               ])
               setLoggedIn(true)
+
+              // Automatically type help after 1 second
+              setTimeout(() => {
+                simulateTyping("help")
+              }, 1000)
             }, 1000)
 
             return () => clearTimeout(timer)
@@ -267,9 +272,17 @@ export default function Terminal() {
 
   return (
     <div
-      className={`w-full max-w-${advancedSettings.terminalMaxWidth} md:h-[${advancedSettings.terminalHeightDesktop}] overflow-y-auto border shadow-lg shadow-green-500/10 p-4 font-mono relative`}
+      className={`relative overflow-y-auto p-4 border border-solid rounded-lg shadow-lg cursor-text w-full max-w-${advancedSettings.terminalMaxWidth} md:h-[${advancedSettings.terminalHeightDesktop}]`}
       style={terminalStyles}
       ref={terminalRef}
+      onClick={() => {
+        if (terminalRef.current) {
+          const input = terminalRef.current.querySelector('input');
+          if (input) {
+            input.focus();
+          }
+        }
+      }}
     >
       {glowEffect}
       <div className="relative z-10">
@@ -291,21 +304,26 @@ export default function Terminal() {
         )}
 
         {loggedIn && !isTyping && (
-          <TerminalPrompt
-            onCommand={handleUserCommand} // Use direct execution for user typing
-            commands={availableCommands}
-            promptText={terminalAppearance.terminal.prompt}
-            textColor={terminalAppearance.colors.promptText}
-            commandColor={terminalAppearance.colors.commandText}
-            cursorColor={terminalAppearance.colors.defaultText}
-            cursorBlinkSpeed={terminalAppearance.terminal.cursorBlinkSpeed}
-          />
+          <div className="flex items-center">
+            <span style={{ color: terminalAppearance.colors.promptText }}>{terminalAppearance.terminal.prompt}</span>
+            <div className="ml-2 flex-1">
+              <TerminalPrompt
+                onCommand={handleUserCommand}
+                commands={availableCommands}
+                promptText=""
+                textColor={terminalAppearance.colors.promptText}
+                commandColor={terminalAppearance.colors.commandText}
+                cursorColor={terminalAppearance.colors.defaultText}
+                cursorBlinkSpeed={terminalAppearance.terminal.cursorBlinkSpeed}
+              />
+            </div>
+          </div>
         )}
 
         {isTyping && (
           <div className="flex items-center">
             <span style={{ color: terminalAppearance.colors.promptText }}>{terminalAppearance.terminal.prompt}</span>
-            <span style={{ color: terminalAppearance.colors.commandText }}>{currentTypingText}</span>
+            <span className="ml-2" style={{ color: terminalAppearance.colors.commandText }}>{currentTypingText}</span>
             <span
               className={`h-5 w-2 ml-0.5 animate-blink`}
               style={{

@@ -343,4 +343,4 @@ export const systemCommands = [
 ]
 
 // The welcome message shown after login
-export const welcomeMessage = 'Welcome user. Type or click "help" to see available commands.'
+export const welcomeMessage = 'Welcome user. Type "help" or click the help button to see available commands.'

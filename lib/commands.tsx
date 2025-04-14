@@ -31,7 +31,7 @@ function generateHelpOutput(): JSX.Element {
           </li>
         ))}
       </ul>
-      <p>Click on any command or type it to execute.</p>
+      <p className="text-gray-400">Click on any command or type it to execute.</p>
     </div>
   )
 }

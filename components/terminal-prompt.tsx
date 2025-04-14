@@ -62,15 +62,18 @@ export default function TerminalPrompt({
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="w-full bg-transparent border-none outline-none font-mono"
+            className="w-full bg-transparent border-none outline-none font-mono caret-transparent"
             style={{ color: commandColor }}
             autoFocus
           />
           <span
-            className={`absolute top-0 left-[calc(0px+${input.length}ch)] h-5 w-2 ${
+            className={`absolute top-0 left-0 h-5 w-2 transition-opacity ${
               cursorVisible ? "opacity-100" : "opacity-0"
             }`}
-            style={{ backgroundColor: cursorColor }}
+            style={{ 
+              backgroundColor: cursorColor,
+              transform: `translateX(${input.length}ch)`
+            }}
           ></span>
         </div>
       </form>

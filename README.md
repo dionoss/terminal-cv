@@ -3,14 +3,14 @@
 A terminal-style CV/resume website that displays your professional information in a command-line interface.
 
 ## 📸 Screenshot
-![screenshot](./public/screenshot.png)
+![screenshot (to be added)](./public/screenshot.png)
 
 ## 🧪 Try It Online
 [Live Demo (to be added)](https://cv.dionave.dev/)
 
 ## How to Customize Your Terminal CV
 
-This Terminal CV is designed to be easily customizable even if you don't have any coding experience. You only need to edit two files to completely personalize your CV.
+This Terminal CV is designed to be easily customizable even if you don't have any coding experience. You only need to edit two files to completely personalize your CV. Easy right?
 
 ### 1. Customizing Content
 
@@ -98,6 +98,9 @@ The terminal has some special behaviors:
 - You can control appearance in the `appearance.tsx` file
 
 ### 5. Future Features
+- [ ] Add build and setup information
+- [ ] Add screenshot
+- [ ] Add live demo
 - [ ] Command autocompletion using TAB
 - [ ] Configurable theme (light/dark/system
 - [ ] Command `history` list output

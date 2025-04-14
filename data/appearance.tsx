@@ -38,7 +38,7 @@ export const terminalAppearance = {
   // TERMINAL SETTINGS
   // ----------------
   terminal: {
-    prompt: "user@portfolio:~$ ", // The text shown before each command
+    prompt: "user@portfolio:~$  ", // The text shown before each command
     cursorBlinkSpeed: 500, // Cursor blink speed in milliseconds (lower = faster)
     typingSpeed: {
       min: 50, // Minimum time between typed characters (milliseconds)

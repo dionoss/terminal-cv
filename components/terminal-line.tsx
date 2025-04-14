@@ -18,6 +18,8 @@ export default function TerminalLine({ type, content }: TerminalLineProps) {
         return null
       case "error":
         return <span style={{ color: terminalAppearance.colors.errorText }}>[ERROR] </span>
+      case "warn":
+        return <span style={{ color: terminalAppearance.colors.warningText }}>[WARN] </span>
       default:
         return null
     }
@@ -38,6 +40,9 @@ export default function TerminalLine({ type, content }: TerminalLineProps) {
         break
       case "error":
         styles.color = terminalAppearance.colors.errorText
+        break
+      case "warn":
+        styles.color = terminalAppearance.colors.warningText
         break
       case "output":
         styles.color = terminalAppearance.colors.defaultText
