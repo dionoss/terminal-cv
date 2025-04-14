@@ -6,7 +6,7 @@ A terminal-style CV/resume website that displays your professional information i
 ![screenshot](./public/screenshot.png)
 
 ## 🧪 Try It Online
-[Live Demo](https://cv.dionave.dev/)
+[Live Demo (to be added)](https://cv.dionave.dev/)
 
 ## How to Customize Your Terminal CV
 
