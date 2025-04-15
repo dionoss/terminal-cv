@@ -116,7 +116,7 @@ If you encounter any issues, you can:
 2. Check for missing quotes, commas, or brackets
 3. Contact me!
 
--------------
+------------------
 
 
 ## Getting Started

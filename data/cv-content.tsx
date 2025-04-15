@@ -1,3 +1,4 @@
+// @cursor-lock
 /**
  * CV Content Configuration
  * =====================
@@ -88,37 +89,29 @@ export const experience = {
   description: "Show professional experience",
   content: {
     // Most recent experience first
-    job0: {
-      title: "Senior Security Engineer",
-      company: "TechSecure Inc.",
-      period: "2020 - Present",
-      achievements: [
-        "Lead security assessments for enterprise clients",
-        "Developed automated security scanning pipeline",
-        "Reduced incident response time by 40% through process improvements",
-      ],
-    },
-    job1: {
-      title: "Cybersecurity Analyst",
-      company: "DefendCorp",
-      period: "2017 - 2020",
-      responsibilities: [
-        "Conducted penetration tests on web and mobile applications",
-        "Implemented security monitoring solutions",
-        "Authored security policies and procedures",
-      ],
-    },
-    job2: {
-      title: "IT Security Specialist",
-      company: "SecureNet",
-      period: "2015 - 2017",
-      responsibilities: [
-        "Managed security infrastructure including firewalls and IDS/IPS",
-        "Performed vulnerability assessments",
-        "Responded to security incidents",
-      ],
-    },
-    // Add more jobs as needed
+    jobs: [
+      {
+        title: "Senior Security Engineer",
+        company: "TechSecure Inc.",
+        period: "2020 - Present",
+        achievements: [
+          "Lead security assessments for enterprise clients",
+          "Developed automated security scanning pipeline",
+          "Reduced incident response time by 40% through process improvements",
+        ],
+      },
+      {
+        title: "Cybersecurity Analyst",
+        company: "DefendCorp",
+        period: "2017 - 2020",
+        responsibilities: [
+          "Conducted penetration tests on web and mobile applications",
+          "Implemented security monitoring solutions",
+          "Authored security policies and procedures",
+        ],
+      },
+      // Add more jobs as needed
+    ]
   }
 }
 

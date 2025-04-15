@@ -1,3 +1,4 @@
+// @cursor-lock
 // APPEARANCE CUSTOMIZATION
 // -----------------------
 // Edit this file to change the look and feel of your terminal CV
