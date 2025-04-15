@@ -1,3 +1,4 @@
+// @cursor-lock
 # Terminal CV
 
 A terminal-style CV/resume website that displays your professional information in a command-line interface.
@@ -17,41 +18,34 @@ This Terminal CV is designed to be easily customizable even if you don't have an
 To edit your CV content and add/modify commands:
 
 1. Open the file `data/cv-content.tsx`
-2. Edit the existing commands or add new ones following the examples.
-
-#### Adding a New Command
-
-To add a new command, copy and paste one of the existing command objects and modify it:
+2. Edit the existing commands or add new ones by copy and pasting one of the existing command objects and modify it:
 
 ```tsx
-{
-  command: "your-command-name",  // What users will type to run it
-  shortcut: "y",                 // Optional shortcut (can be omitted)
-  description: "Description of what this command shows",
-  content: `
-    <div>
-      <p><strong>Your Section Title:</strong></p>
-      <p>Your content goes here</p>
-      <ul>
-        <li>You can use simple HTML tags</li>
-        <li>Like paragraphs, lists, and formatting</li>
-      </ul>
-    </div>
-  `
+export const whoami = {
+  command: "whoami",
+  shortcut: "w", // this is the short command, similar to how cls clears your screen.
+  description: "Show personal information", //this is shown in the help command.
+  content: {
+    // Basic information
+    name: "John Doe",
+    title: "Senior Cybersecurity Engineer",
+    location: "San Francisco, CA",
+
+    // Short bio/summary
+    summary: `Experienced cybersecurity professional with a passion for building secure systems and identifying 
+    vulnerabilities. Specialized in penetration testing, security architecture, and incident response.`,
+
+    // Contact information
+    contact: {
+      email: "john.doe@example.com",
+      linkedin: "linkedin.com/in/johndoe",
+      github: "github.com/johndoe",
+      twitter: "@johndoe_security",
+      // Add any other contact methods you want
+    },
+  }
 }
 ```
-
-#### HTML Tags You Can Use
-
-You can use these HTML tags in your content:
-
-- `<p>...</p>` - For paragraphs
-- `<strong>...</strong>` - For bold text
-- `<em>...</em>` - For emphasized text (usually displayed in yellow)
-- `<ul>...</ul>` - For unordered lists
-- `<li>...</li>` - For list items
-- `<div>...</div>` - For grouping content
-
 ### 2. Customizing Appearance
 
 To change how your terminal looks:
@@ -92,27 +86,24 @@ export const bootMessages = [
 ### 4. Terminal Behavior
 
 The terminal has some special behaviors:
-
-- When you type a command directly, it executes immediately
+- When you type a command directly and press enter, it executes immediately
 - When you click on a command link, it simulates typing the command first
-- You can control appearance in the `appearance.tsx` file
 
 ### 5. Future Features
-- [ ] Add build and setup information
 - [ ] Add screenshot
 - [ ] Add live demo
+- [ ] Add build information
 - [ ] Command autocompletion using TAB
-- [ ] Configurable theme (light/dark/system
+- [ ] Configurable theme (light/dark/system)
 - [ ] Command `history` list output
-- [ ] Command alias system (e.g., `ls` for `help`)
+- [X] Command alias system (e.g., `ls` for `help`)
 - [ ] Mobile responsive terminal view
-- [ ] Keyboard accessibility enhancements
-- [ ] Localization / language switch support
 - [ ] Download as `.pdf` resume command
+- [ ] Create dockerfile
 
 ## Tips for Non-Technical Users
 
-- Always keep the quotes (`"`) around text values
+- Always keep the quotes (``) or ("") around text values
 - Don't remove the commas at the end of lines
 - If you're not sure, make a backup of the file before editing
 - Test your changes after saving to make sure everything works
@@ -125,56 +116,8 @@ If you encounter any issues, you can:
 2. Check for missing quotes, commas, or brackets
 3. Contact me!
 
-## Security Features
+-------------
 
-### HTML Sanitization
-- Uses DOMPurify to prevent XSS attacks
-- Whitelists specific HTML tags and attributes
-- Sanitizes all user input and command content
-
-### Content Security Policy
-- Implements strict CSP headers
-- Restricts resource loading to trusted sources
-- Prevents frame embedding and clickjacking
-- Controls form submissions
-
-### Input Validation
-- Validates command names using regex
-- Enforces length limits
-- Provides clear error messages
-- Prevents command injection
-
-### Error Handling
-- Custom error types for different scenarios
-- Graceful error recovery
-- User-friendly error messages
-- Proper error logging
-
-## Best Practices
-
-### Code Organization
-- Modular component structure
-- Clear separation of concerns
-- Type-safe implementation
-- Comprehensive documentation
-
-### Performance
-- Optimized rendering
-- Efficient state management
-- Proper cleanup of effects
-- Minimal re-renders
-
-### Accessibility
-- Keyboard navigation
-- Screen reader support
-- ARIA labels
-- Color contrast compliance
-
-### Development
-- TypeScript for type safety
-- ESLint for code quality
-- Prettier for formatting
-- Husky for pre-commit hooks
 
 ## Getting Started
 
@@ -200,9 +143,7 @@ Edit the following files to customize your CV:
 ## Security Considerations
 
 When adding new features or modifying existing ones:
-1. Always sanitize HTML content
-2. Validate all user input
-3. Follow the principle of least privilege
+1. Validate all user input
 4. Keep dependencies updated
 5. Test for security vulnerabilities
 
