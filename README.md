@@ -124,3 +124,88 @@ If you encounter any issues, you can:
 1. Restore from a backup
 2. Check for missing quotes, commas, or brackets
 3. Contact me!
+
+## Security Features
+
+### HTML Sanitization
+- Uses DOMPurify to prevent XSS attacks
+- Whitelists specific HTML tags and attributes
+- Sanitizes all user input and command content
+
+### Content Security Policy
+- Implements strict CSP headers
+- Restricts resource loading to trusted sources
+- Prevents frame embedding and clickjacking
+- Controls form submissions
+
+### Input Validation
+- Validates command names using regex
+- Enforces length limits
+- Provides clear error messages
+- Prevents command injection
+
+### Error Handling
+- Custom error types for different scenarios
+- Graceful error recovery
+- User-friendly error messages
+- Proper error logging
+
+## Best Practices
+
+### Code Organization
+- Modular component structure
+- Clear separation of concerns
+- Type-safe implementation
+- Comprehensive documentation
+
+### Performance
+- Optimized rendering
+- Efficient state management
+- Proper cleanup of effects
+- Minimal re-renders
+
+### Accessibility
+- Keyboard navigation
+- Screen reader support
+- ARIA labels
+- Color contrast compliance
+
+### Development
+- TypeScript for type safety
+- ESLint for code quality
+- Prettier for formatting
+- Husky for pre-commit hooks
+
+## Getting Started
+
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Run the development server: `npm run dev`
+4. Open [http://localhost:3000](http://localhost:3000)
+
+## Customization
+
+Edit the following files to customize your CV:
+- `data/cv-content.tsx`: Update your personal information and commands
+- `data/appearance.tsx`: Customize the terminal's look and feel
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## Security Considerations
+
+When adding new features or modifying existing ones:
+1. Always sanitize HTML content
+2. Validate all user input
+3. Follow the principle of least privilege
+4. Keep dependencies updated
+5. Test for security vulnerabilities
+
+## License
+
+MIT

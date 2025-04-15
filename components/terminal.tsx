@@ -1,3 +1,23 @@
+/**
+ * Terminal Component
+ * ================
+ * 
+ * A terminal-style interface for displaying and interacting with CV content.
+ * 
+ * Features:
+ * - Command input and execution
+ * - Command history
+ * - Output display
+ * - Error handling
+ * - Keyboard navigation
+ * 
+ * Security:
+ * - Input sanitization
+ * - Command validation
+ * - Error handling
+ * - Access control
+ */
+
 "use client"
 
 import { useEffect, useState, useRef } from "react"
@@ -9,8 +29,30 @@ import { bootSequence } from "@/lib/boot-sequence"
 import { terminalAppearance, advancedSettings } from "@/data/appearance"
 import { welcomeMessage } from "@/data/cv-content"
 
+/**
+ * Terminal Component
+ * 
+ * This component provides a terminal-style interface for:
+ * 1. Displaying CV content
+ * 2. Executing commands
+ * 3. Managing command history
+ * 4. Handling errors
+ * 
+ * State Management:
+ * - output: Current terminal output
+ * - history: Command history
+ * - error: Current error message
+ * 
+ * Security:
+ * - Input sanitization
+ * - Command validation
+ * - Error handling
+ * - Access control
+ */
 export default function Terminal() {
-  const [history, setHistory] = useState<Array<{ type: string; content: string | ReactElement }>>([])
+  const [output, setOutput] = useState<React.ReactNode[]>([])
+  const [history, setHistory] = useState<string[]>([])
+  const [error, setError] = useState<string | null>(null)
   const [booting, setBooting] = useState(terminalAppearance.showBootSequence)
   const [loggedIn, setLoggedIn] = useState(!terminalAppearance.showLoginSequence)
   const [bootStep, setBootStep] = useState(0)

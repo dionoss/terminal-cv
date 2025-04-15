@@ -3,6 +3,8 @@
 // Edit this file to change the look and feel of your terminal CV
 // You don't need to understand code - just change the values between quotes or numbers
 
+import { helpButton } from "@/components/ui/help-button"
+
 export const terminalAppearance = {
   // COLORS
   // ------
@@ -16,29 +18,24 @@ export const terminalAppearance = {
     defaultText: "#22c55e", // Default text color (green)
     highlightText: "#22c55e", // Highlighted text (bright green)
     headingText: "#22c55e", // Heading text color
-
-    // Command prompt colors
-    promptText: "#22c55e", // Command prompt text color
-    commandText: "#22c55e", // Color of commands you type
-
-    // Section colors
-    sectionHeadings: "#22c55e", // Section headings (e.g., "Personal Information:")
-    sectionSubheadings: "#eab308", // Section subheadings (e.g., "Programming:")
+    subheadingText: "#22c55e", // Heading text color
 
     // Link and button colors
-    linkText: "#eab308", // Color of clickable links/commands
-    linkHoverText: "#fef08a", // Color when hovering over links
+    linkText: "#ffff44", // Color of clickable links/commands
+    linkHoverText: "#22c55e", // Color when hovering over links
 
     // Status colors
     errorText: "#ef4444", // Error message color
-    warningText: "#eab308", // Warning message color
+    warningText: "#ffff44", // Warning message color
     successText: "#22c55e", // Success message color
   },
 
   // TERMINAL SETTINGS
   // ----------------
   terminal: {
-    prompt: "user@portfolio:~$  ", // The text shown before each command
+    // The welcome message shown after login
+    welcomeMessage: "Welcome user. Type or click " + helpButton + " to see available commands.",
+    prompt: "user@portfolio:~$ ", // The text shown before each command
     cursorBlinkSpeed: 500, // Cursor blink speed in milliseconds (lower = faster)
     typingSpeed: {
       min: 50, // Minimum time between typed characters (milliseconds)
@@ -55,16 +52,14 @@ export const terminalAppearance = {
 
   // BOOT SEQUENCE
   // ------------
-  // Set to false to skip the boot sequence and go straight to the login
   showBootSequence: true,
 
   // LOGIN SEQUENCE
   // -------------
-  // Set to false to skip the login sequence and go straight to the terminal
   showLoginSequence: true,
   login: {
     username: "user", // The username shown during login
-    passwordMask: "••••", // The character used to mask the password
+    passwordMask: "•••••••••", // The character used to mask the password
   },
 }
 
@@ -83,7 +78,7 @@ export const bootMessages = [
   { type: "ok", message: "System ready" },
 ]
 
-// ADVANCED SETTINGS (be careful when editing these)
+// ADVANCED SETTINGS
 // -------------------------------------------------
 export const advancedSettings = {
   // Font settings
