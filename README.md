@@ -90,13 +90,14 @@ The terminal has some special behaviors:
 - When you click on a command link, it simulates typing the command first
 
 ### 5. Future Features
+- [ ] It actually runs!
 - [ ] Add screenshot
 - [ ] Add live demo
 - [ ] Add build information
 - [ ] Command autocompletion using TAB
 - [ ] Configurable theme (light/dark/system)
 - [ ] Command `history` list output
-- [X] Command alias system (e.g., `ls` for `help`)
+- [ ] Command alias system (e.g., `ls` for `help`)
 - [ ] Mobile responsive terminal view
 - [ ] Download as `.pdf` resume command
 - [ ] Create dockerfile
