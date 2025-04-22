@@ -39,6 +39,20 @@ body {
   color: #ffffff;
 }
 
+/* Terminal cursor styles */
+.terminal-container {
+  cursor: default !important;
+}
+
+.terminal-container * {
+  cursor: default !important;
+}
+
+.terminal-container button,
+.terminal-container a {
+  cursor: pointer !important;
+}
+
 /* Blinking cursor animation */
 @keyframes blink {
   0%,
@@ -52,4 +66,9 @@ body {
 
 .animate-blink {
   animation: blink 1s step-end infinite;
+}
+
+/* Hide default cursor in input */
+.caret-transparent {
+  caret-color: transparent;
 }

@@ -1,58 +1,14 @@
-/**
- * Terminal Component
- * ================
- * 
- * A terminal-style interface for displaying and interacting with CV content.
- * 
- * Features:
- * - Command input and execution
- * - Command history
- * - Output display
- * - Error handling
- * - Keyboard navigation
- * 
- * Security:
- * - Input sanitization
- * - Command validation
- * - Error handling
- * - Access control
- */
-
 "use client"
 
 import { useEffect, useState, useRef } from "react"
-import type { ReactElement } from "react"
 import TerminalLine from "./terminal-line"
 import TerminalPrompt from "./terminal-prompt"
 import { commands, generateCommands } from "@/lib/commands"
 import { bootSequence } from "@/lib/boot-sequence"
 import { terminalAppearance, advancedSettings } from "@/data/appearance"
-import { welcomeMessage } from "@/data/cv-content"
 
-/**
- * Terminal Component
- * 
- * This component provides a terminal-style interface for:
- * 1. Displaying CV content
- * 2. Executing commands
- * 3. Managing command history
- * 4. Handling errors
- * 
- * State Management:
- * - output: Current terminal output
- * - history: Command history
- * - error: Current error message
- * 
- * Security:
- * - Input sanitization
- * - Command validation
- * - Error handling
- * - Access control
- */
 export default function Terminal() {
-  const [output, setOutput] = useState<React.ReactNode[]>([])
-  const [history, setHistory] = useState<string[]>([])
-  const [error, setError] = useState<string | null>(null)
+  const [history, setHistory] = useState<Array<{ type: string; content: string | JSX.Element }>>([])
   const [booting, setBooting] = useState(terminalAppearance.showBootSequence)
   const [loggedIn, setLoggedIn] = useState(!terminalAppearance.showLoginSequence)
   const [bootStep, setBootStep] = useState(0)
@@ -66,12 +22,22 @@ export default function Terminal() {
     target: "",
     step: 0,
   })
+  const [cursorVisible, setCursorVisible] = useState(true)
   const [availableCommands, setAvailableCommands] = useState(commands)
   const terminalRef = useRef<HTMLDivElement>(null)
 
   // Initialize commands on client-side
   useEffect(() => {
     setAvailableCommands(generateCommands())
+  }, [])
+
+  // Blinking cursor effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCursorVisible((prev) => !prev)
+    }, terminalAppearance.terminal.cursorBlinkSpeed)
+
+    return () => clearInterval(interval)
   }, [])
 
   // Handle boot sequence
@@ -84,7 +50,7 @@ export default function Terminal() {
     if (bootStep < bootSequence.length) {
       const timer = setTimeout(
         () => {
-          setHistory((prev: Array<{ type: string; content: string | ReactElement }>) => [...prev, { type: "boot", content: bootSequence[bootStep] }])
+          setHistory((prev) => [...prev, { type: "boot", content: bootSequence[bootStep] }])
           setBootStep(bootStep + 1)
         },
         Math.random() *
@@ -151,25 +117,20 @@ export default function Terminal() {
                 {
                   type: "system",
                   content: (
-                    <div>
+                    <span>
                       Welcome user. Type or click{" "}
                       <button
                         onClick={() => simulateTyping("help")}
                         className="text-yellow-400 hover:text-yellow-200 hover:underline cursor-pointer"
                       >
-                        help
+                        "help"
                       </button>{" "}
                       to see available commands.
-                    </div>
+                    </span>
                   ),
                 },
               ])
               setLoggedIn(true)
-
-              // Automatically type help after 1 second
-              setTimeout(() => {
-                simulateTyping("help")
-              }, 1000)
             }, 1000)
 
             return () => clearTimeout(timer)
@@ -285,16 +246,16 @@ export default function Terminal() {
 
   // Listen for custom terminal command events
   useEffect(() => {
-    const handleTerminalCommand = (e: CustomEvent<string>) => {
+    const handleTerminalCommand = (e: Event) => {
       if (!isTyping) {
-        simulateTyping(e.detail)
+        simulateTyping((e as CustomEvent<string>).detail)
       }
     }
 
-    window.addEventListener("terminal-command", handleTerminalCommand as EventListener)
+    window.addEventListener("terminal-command", handleTerminalCommand)
 
     return () => {
-      window.removeEventListener("terminal-command", handleTerminalCommand as EventListener)
+      window.removeEventListener("terminal-command", handleTerminalCommand)
     }
   }, [isTyping])
 
@@ -306,6 +267,7 @@ export default function Terminal() {
     fontSize: advancedSettings.fontSize,
     borderRadius: terminalAppearance.terminal.roundedCorners ? "0.5rem" : "0",
     height: `${advancedSettings.terminalHeight}`,
+    cursor: "default", // Hide the default cursor
   }
 
   const glowEffect = terminalAppearance.terminal.showGlowEffect ? (
@@ -314,17 +276,9 @@ export default function Terminal() {
 
   return (
     <div
-      className={`relative overflow-y-auto p-4 border border-solid rounded-lg shadow-lg cursor-text w-full max-w-${advancedSettings.terminalMaxWidth} md:h-[${advancedSettings.terminalHeightDesktop}]`}
+      className={`w-full max-w-${advancedSettings.terminalMaxWidth} md:h-[${advancedSettings.terminalHeightDesktop}] overflow-y-auto border shadow-lg shadow-green-500/10 p-4 font-mono relative`}
       style={terminalStyles}
       ref={terminalRef}
-      onClick={() => {
-        if (terminalRef.current) {
-          const input = terminalRef.current.querySelector('div[tabindex="0"]');
-          if (input) {
-            (input as HTMLElement).focus();
-          }
-        }
-      }}
     >
       {glowEffect}
       <div className="relative z-10">
@@ -339,43 +293,32 @@ export default function Terminal() {
               {loginTyping.text}
             </span>
             <span
-              className={`h-5 w-2 ml-0.5 animate-blink`}
+              className={`h-5 w-2 ml-0.5 ${cursorVisible ? "opacity-100" : "opacity-0"}`}
               style={{ backgroundColor: terminalAppearance.colors.defaultText }}
             ></span>
           </div>
         )}
 
         {loggedIn && !isTyping && (
-          <div className="flex items-center">
-            <span style={{ color: terminalAppearance.colors.promptText }}>{terminalAppearance.terminal.prompt}</span>
-            <div className="ml-2 flex-1">
-              <TerminalPrompt
-                onCommand={handleUserCommand}
-                commands={availableCommands}
-                promptText=""
-                textColor={terminalAppearance.colors.promptText}
-                commandColor={terminalAppearance.colors.commandText}
-                cursorColor={terminalAppearance.colors.defaultText}
-                cursorBlinkSpeed={terminalAppearance.terminal.cursorBlinkSpeed}
-                onFocus={() => {
-                  if (terminalRef.current) {
-                    terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-                  }
-                }}
-              />
-            </div>
-          </div>
+          <TerminalPrompt
+            onCommand={handleUserCommand} // Use direct execution for user typing
+            commands={availableCommands}
+            promptText={terminalAppearance.terminal.prompt}
+            textColor={terminalAppearance.colors.promptText}
+            commandColor={terminalAppearance.colors.commandText}
+            cursorColor={terminalAppearance.colors.defaultText}
+            cursorBlinkSpeed={terminalAppearance.terminal.cursorBlinkSpeed}
+          />
         )}
 
         {isTyping && (
           <div className="flex items-center">
             <span style={{ color: terminalAppearance.colors.promptText }}>{terminalAppearance.terminal.prompt}</span>
-            <span className="ml-2" style={{ color: terminalAppearance.colors.commandText }}>{currentTypingText}</span>
+            <span style={{ color: terminalAppearance.colors.commandText }}>{currentTypingText}</span>
             <span
-              className={`h-5 w-2 ml-0.5 animate-blink`}
+              className={`h-5 w-2 ml-0.5 ${cursorVisible ? "opacity-100" : "opacity-0"}`}
               style={{
                 backgroundColor: terminalAppearance.colors.defaultText,
-                animationDuration: `${terminalAppearance.terminal.cursorBlinkSpeed * 2}ms`,
               }}
             ></span>
           </div>

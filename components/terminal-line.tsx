@@ -1,70 +1,58 @@
-/**
- * Terminal Line Component
- * =====================
- * 
- * This component renders a single line in the terminal output.
- * 
- * Features:
- * - Line type detection
- * - Content formatting
- * - Error handling
- * - Accessibility
- * 
- * Security:
- * - Content sanitization
- * - Error handling
- * - Safe rendering
- */
+import type React from "react"
+import type { ReactNode } from "react"
+import { terminalAppearance } from "@/data/appearance"
 
-/**
- * Terminal Line Props
- * 
- * Defines the properties for the terminal line component:
- * - type: Line type (command, output, error, system)
- * - content: Line content (string or React element)
- * 
- * Security:
- * - Type validation
- * - Content sanitization
- */
 interface TerminalLineProps {
-  type: "command" | "output" | "error" | "system"
-  content: string | React.ReactElement
+  type: string
+  content: string | ReactNode
 }
 
-/**
- * Terminal Line Component
- * 
- * Renders a single line in the terminal output with appropriate styling:
- * - Command lines: User input
- * - Output lines: Command results
- * - Error lines: Error messages
- * - System lines: System messages
- * 
- * Security:
- * - Content sanitization
- * - Error handling
- * - Safe rendering
- */
 export default function TerminalLine({ type, content }: TerminalLineProps) {
-  // Get appropriate styling based on line type
-  const getLineStyle = () => {
+  const getPrefix = () => {
     switch (type) {
+      case "boot":
+        return null
       case "command":
-        return "text-green-400"
-      case "output":
-        return "text-gray-300"
-      case "error":
-        return "text-red-400"
+        return <span style={{ color: terminalAppearance.colors.promptText }}>{terminalAppearance.terminal.prompt}</span>
       case "system":
-        return "text-yellow-400"
+        return null
+      case "error":
+        return <span style={{ color: terminalAppearance.colors.errorText }}>[ERROR] </span>
       default:
-        return "text-gray-300"
+        return null
     }
   }
 
+  const getStyles = () => {
+    const styles: React.CSSProperties = { marginBottom: "0.25rem" }
+
+    switch (type) {
+      case "boot":
+        styles.color = terminalAppearance.colors.defaultText
+        break
+      case "command":
+        styles.color = terminalAppearance.colors.commandText
+        break
+      case "system":
+        styles.color = terminalAppearance.colors.defaultText
+        break
+      case "error":
+        styles.color = terminalAppearance.colors.errorText
+        break
+      case "output":
+        styles.color = terminalAppearance.colors.defaultText
+        styles.paddingLeft = "1rem"
+        break
+      default:
+        styles.color = terminalAppearance.colors.defaultText
+    }
+
+    return styles
+  }
+
   return (
-    <div className={`${getLineStyle()} font-mono text-sm mb-1`}>
+    <div style={getStyles()}>
+      {getPrefix()}
       {content}
     </div>
   )
