@@ -1,9 +1,9 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useRef, useEffect } from "react"
 import type { CommandType } from "@/lib/commands"
+import { terminalAppearance } from "@/data/appearance"
 
 interface TerminalPromptProps {
   onCommand: (command: string) => void
@@ -55,22 +55,31 @@ export default function TerminalPrompt({
   return (
     <div>
       <form onSubmit={handleSubmit} className="flex items-center">
-        <span style={{ color: textColor }}>{promptText}</span>
+        <pre style={{ color: textColor, margin: 0 }}>{promptText}</pre>
         <div className="flex-1 relative">
           <input
             ref={inputRef}
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="w-full bg-transparent border-none outline-none font-mono caret-transparent"
-            style={{ color: commandColor }}
+            className="w-full bg-transparent border-none outline-none font-mono caret-transparent p-0"
+            style={{ 
+              color: commandColor,
+              fontFamily: terminalAppearance.typography.fontFamily,
+              fontSize: terminalAppearance.typography.fontSize,
+              lineHeight: terminalAppearance.typography.lineHeight,
+              letterSpacing: terminalAppearance.typography.letterSpacing,
+            }}
             autoFocus
           />
           <span
-            className={`absolute top-0 left-[calc(0px+${input.length}ch)] h-5 w-2 ${
-              cursorVisible ? "opacity-100" : "opacity-0"
-            }`}
-            style={{ backgroundColor: cursorColor }}
+            className={`absolute top-0 h-5 w-2 ${cursorVisible ? "opacity-100" : "opacity-0"}`}
+            style={{ 
+              left: `${input.length}ch`,
+              backgroundColor: cursorColor,
+              height: terminalAppearance.terminal.cursorHeight,
+              width: terminalAppearance.terminal.cursorWidth,
+            }}
           ></span>
         </div>
       </form>

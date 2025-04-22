@@ -1,102 +1,118 @@
 // APPEARANCE CUSTOMIZATION
 // -----------------------
 // Edit this file to change the look and feel of your terminal CV
-// You don't need to understand code - just change the values between quotes or numbers
 
 export const terminalAppearance = {
-  // COLORS
-  // ------
-  // Use color names or hex codes (#RRGGBB)
-  colors: {
-    // Background colors
-    background: "black", // Terminal background color
-    terminalBorder: "#22c55e4d", // Border color (default: light green with transparency)
-
-    // Text colors
-    defaultText: "#22c55e", // Default text color (green)
-    highlightText: "#22c55e", // Highlighted text (bright green)
-    headingText: "#22c55e", // Heading text color
-
-    // Command prompt colors
-    promptText: "#22c55e", // Command prompt text color
-    commandText: "#22c55e", // Color of commands you type
-
-    // Section colors
-    sectionHeadings: "#22c55e", // Section headings (e.g., "Personal Information:")
-    sectionSubheadings: "#eab308", // Section subheadings (e.g., "Programming:")
-
-    // Link and button colors
-    linkText: "#eab308", // Color of clickable links/commands
-    linkHoverText: "#fef08a", // Color when hovering over links
-
-    // Status colors
-    errorText: "#ef4444", // Error message color
-    warningText: "#eab308", // Warning message color
-    successText: "#22c55e", // Success message color
+  // TERMINAL LAYOUT
+  // --------------
+  layout: {
+    // Dimensions
+    height: {
+      mobile: "85vh",
+      desktop: "80vh",
+    },
+    maxWidth: "4xl",
+    roundedCorners: true,
+    showGlowEffect: true,
+    showScrollbar: true,
   },
 
-  // TERMINAL SETTINGS
-  // ----------------
+  // TYPOGRAPHY
+  // ---------
+  typography: {
+    fontFamily: "'Courier New', monospace",
+    fontSize: "1rem",
+    lineHeight: "1.5",
+    letterSpacing: "normal",
+  },
+
+  // COLORS
+  // ------
+  colors: {
+    // Background
+    background: "black",
+    terminalBorder: "#22c55e4d",
+
+    // Text
+    defaultText: "#22c55e",
+    highlightText: "#22c55e",
+    headingText: "#22c55e",
+
+    // Command Interface
+    promptText: "#22c55e",
+    commandText: "#22c55e",
+    cursorColor: "#22c55e",
+
+    // Status Messages
+    successText: "#22c55e",
+    warningText: "#eab308",
+    errorText: "#ef4444",
+
+    // Interactive Elements
+    linkText: "#eab308",
+    linkHoverText: "#fef08a",
+  },
+
+  // COMMAND INTERFACE
+  // ---------------
   terminal: {
-    prompt: "user@portfolio:~$ ", // The text shown before each command
-    cursorBlinkSpeed: 500, // Cursor blink speed in milliseconds (lower = faster)
+    // Prompt
+    prompt: "user@portfolio:~$ ",
+    promptSpacing: " ",
+
+    // Cursor
+    cursorBlinkSpeed: 500,
+    cursorWidth: "2px",
+    cursorHeight: "1.25rem",
+
+    // Typing Animation
     typingSpeed: {
-      min: 50, // Minimum time between typed characters (milliseconds)
-      max: 100, // Maximum time between typed characters (milliseconds)
+      min: 50,
+      max: 100,
     },
-    bootSequenceSpeed: {
-      min: 200, // Minimum time between boot messages (milliseconds)
-      max: 300, // Maximum time between boot messages (milliseconds)
-    },
-    showGlowEffect: true, // Whether to show the green glow effect
-    roundedCorners: true, // Whether to show rounded corners
-    scrollbarVisible: true, // Whether to show the scrollbar
-    welcomeMessage: 'Welcome user. Type or click "help" to see available commands.', // Welcome message shown after login
   },
 
   // BOOT SEQUENCE
   // ------------
-  // Set to false to skip the boot sequence and go straight to the login
-  showBootSequence: true,
+  boot: {
+    enabled: true,
+    speed: {
+      min: 200,
+      max: 300,
+    },
+    messages: [
+      { type: "ok", message: "Initializing system..." },
+      { type: "ok", message: "Loading kernel modules..." },
+      { type: "ok", message: "Starting network manager..." },
+      { type: "warn", message: "Network security scan detected 3 potential vulnerabilities" },
+      { type: "ok", message: "Applying security patches..." },
+      { type: "ok", message: "Starting system services..." },
+      { type: "ok", message: "Loading CV modules..." },
+      { type: "ok", message: "System ready" },
+    ],
+  },
 
   // LOGIN SEQUENCE
   // -------------
-  // Set to false to skip the login sequence and go straight to the terminal
-  showLoginSequence: true,
   login: {
-    username: "user", // The username shown during login
-    passwordMask: "••••", // The character used to mask the password
+    enabled: true,
+    username: "user",
+    passwordMask: "••••",
+    welcomeMessage: 'Welcome user. Type or click "help" to see available commands.',
+  },
+
+  // ANIMATIONS
+  // ---------
+  animations: {
+    useTypingAnimation: true,
+    simulateTypingForUserCommands: false,
   },
 }
 
-// BOOT SEQUENCE MESSAGES
-// ---------------------
-// These are the messages shown during the boot sequence
-// You can add, remove, or modify these messages
-export const bootMessages = [
-  { type: "ok", message: "Initializing system..." },
-  { type: "ok", message: "Loading kernel modules..." },
-  { type: "ok", message: "Starting network manager..." },
-  { type: "warn", message: "Network security scan detected 3 potential vulnerabilities" },
-  { type: "ok", message: "Applying security patches..." },
-  { type: "ok", message: "Starting system services..." },
-  { type: "ok", message: "Loading CV modules..." },
-  { type: "ok", message: "System ready" },
-]
-
-// ADVANCED SETTINGS (be careful when editing these)
-// -------------------------------------------------
+// ADVANCED SETTINGS
+// ----------------
 export const advancedSettings = {
-  // Font settings
-  fontFamily: "'Courier New', monospace", // Terminal font
-  fontSize: "1rem", // Base font size
-
-  // Animation settings
-  useTypingAnimation: true, // Whether to animate typing for clicked commands
-  simulateTypingForUserCommands: false, // Whether to simulate typing for user-typed commands (set to false)
-
-  // Terminal dimensions
-  terminalHeight: "85vh", // Height on mobile
-  terminalHeightDesktop: "80vh", // Height on desktop
-  terminalMaxWidth: "4xl", // Maximum width (Tailwind size)
+  // Development settings
+  debugMode: false,
+  performanceMode: false,
 }

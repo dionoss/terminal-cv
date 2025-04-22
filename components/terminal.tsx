@@ -6,11 +6,10 @@ import TerminalPrompt from "./terminal-prompt"
 import { commands, generateCommands } from "@/lib/commands"
 import { bootSequence } from "@/lib/boot-sequence"
 import { terminalAppearance, advancedSettings } from "@/data/appearance"
-
 export default function Terminal() {
-  const [history, setHistory] = useState<Array<{ type: string; content: string | JSX.Element }>>([])
-  const [booting, setBooting] = useState(terminalAppearance.showBootSequence)
-  const [loggedIn, setLoggedIn] = useState(!terminalAppearance.showLoginSequence)
+  const [history, setHistory] = useState<Array<{ type: string; content: string | React.ReactNode }>>([])
+  const [booting, setBooting] = useState(terminalAppearance.boot.enabled)
+  const [loggedIn, setLoggedIn] = useState(!terminalAppearance.login.enabled)
   const [bootStep, setBootStep] = useState(0)
   const [loginStep, setLoginStep] = useState(0)
   const [isTyping, setIsTyping] = useState(false)
@@ -24,6 +23,7 @@ export default function Terminal() {
   })
   const [cursorVisible, setCursorVisible] = useState(true)
   const [availableCommands, setAvailableCommands] = useState(commands)
+  const [hasShownHelp, setHasShownHelp] = useState(false)
   const terminalRef = useRef<HTMLDivElement>(null)
 
   // Initialize commands on client-side
@@ -42,7 +42,7 @@ export default function Terminal() {
 
   // Handle boot sequence
   useEffect(() => {
-    if (!terminalAppearance.showBootSequence) {
+    if (!terminalAppearance.boot.enabled) {
       setBooting(false)
       return
     }
@@ -54,8 +54,8 @@ export default function Terminal() {
           setBootStep(bootStep + 1)
         },
         Math.random() *
-          (terminalAppearance.terminal.bootSequenceSpeed.max - terminalAppearance.terminal.bootSequenceSpeed.min) +
-          terminalAppearance.terminal.bootSequenceSpeed.min,
+          (terminalAppearance.boot.speed.max - terminalAppearance.boot.speed.min) +
+          terminalAppearance.boot.speed.min,
       )
 
       return () => clearTimeout(timer)
@@ -70,7 +70,7 @@ export default function Terminal() {
 
   // Handle login typing animation
   useEffect(() => {
-    if (!terminalAppearance.showLoginSequence) {
+    if (!terminalAppearance.login.enabled) {
       setLoggedIn(true)
       return
     }
@@ -118,14 +118,7 @@ export default function Terminal() {
                   type: "system",
                   content: (
                     <span>
-                      Welcome user. Type or click{" "}
-                      <button
-                        onClick={() => simulateTyping("help")}
-                        className="text-yellow-400 hover:text-yellow-200 hover:underline cursor-pointer"
-                      >
-                        "help"
-                      </button>{" "}
-                      to see available commands.
+                      {terminalAppearance.login.welcomeMessage}
                     </span>
                   ),
                 },
@@ -144,8 +137,10 @@ export default function Terminal() {
 
   // Start login sequence
   useEffect(() => {
-    if (!terminalAppearance.showLoginSequence) {
+    if (!terminalAppearance.login.enabled) {
       setLoggedIn(true)
+      // Auto type help command if login sequence is disabled
+      setTimeout(() => simulateTyping("help"), 1000)
       return
     }
 
@@ -160,9 +155,21 @@ export default function Terminal() {
     }
   }, [booting, loggedIn, loginStep, loginTyping.isTyping])
 
+  // Auto type help command after login
+  useEffect(() => {
+    if (loggedIn && !isTyping && !commandToExecute && !hasShownHelp) {
+      // Small delay after login to ensure smooth transition
+      const timer = setTimeout(() => {
+        simulateTyping("help")
+        setHasShownHelp(true)
+      }, 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [loggedIn, isTyping, commandToExecute, hasShownHelp])
+
   // Typing animation effect for commands
   useEffect(() => {
-    if (!advancedSettings.useTypingAnimation) {
+    if (!terminalAppearance.animations.useTypingAnimation) {
       if (commandToExecute) {
         executeCommand(commandToExecute)
         setCommandToExecute(null)
@@ -234,7 +241,7 @@ export default function Terminal() {
   // Handle command from clicking (with typing animation)
   const simulateTyping = (cmd: string) => {
     if (!isTyping) {
-      if (advancedSettings.useTypingAnimation) {
+      if (terminalAppearance.animations.useTypingAnimation) {
         setIsTyping(true)
         setCurrentTypingText("")
         setCommandToExecute(cmd)
@@ -263,20 +270,22 @@ export default function Terminal() {
   const terminalStyles = {
     backgroundColor: terminalAppearance.colors.background,
     borderColor: terminalAppearance.colors.terminalBorder,
-    fontFamily: advancedSettings.fontFamily,
-    fontSize: advancedSettings.fontSize,
-    borderRadius: terminalAppearance.terminal.roundedCorners ? "0.5rem" : "0",
-    height: `${advancedSettings.terminalHeight}`,
-    cursor: "default", // Hide the default cursor
+    fontFamily: terminalAppearance.typography.fontFamily,
+    fontSize: terminalAppearance.typography.fontSize,
+    lineHeight: terminalAppearance.typography.lineHeight,
+    letterSpacing: terminalAppearance.typography.letterSpacing,
+    borderRadius: terminalAppearance.layout.roundedCorners ? "0.5rem" : "0",
+    height: terminalAppearance.layout.height.mobile,
+    cursor: "default",
   }
 
-  const glowEffect = terminalAppearance.terminal.showGlowEffect ? (
+  const glowEffect = terminalAppearance.layout.showGlowEffect ? (
     <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_center,rgba(0,100,0,0.1),transparent)] pointer-events-none"></div>
   ) : null
 
   return (
     <div
-      className={`w-full max-w-${advancedSettings.terminalMaxWidth} md:h-[${advancedSettings.terminalHeightDesktop}] overflow-y-auto border shadow-lg shadow-green-500/10 p-4 font-mono relative`}
+      className={`w-full max-w-${terminalAppearance.layout.maxWidth} md:h-[${terminalAppearance.layout.height.desktop}] overflow-y-auto border shadow-lg shadow-green-500/10 p-4 font-mono relative`}
       style={terminalStyles}
       ref={terminalRef}
     >
@@ -301,19 +310,19 @@ export default function Terminal() {
 
         {loggedIn && !isTyping && (
           <TerminalPrompt
-            onCommand={handleUserCommand} // Use direct execution for user typing
+            onCommand={handleUserCommand}
             commands={availableCommands}
             promptText={terminalAppearance.terminal.prompt}
             textColor={terminalAppearance.colors.promptText}
             commandColor={terminalAppearance.colors.commandText}
-            cursorColor={terminalAppearance.colors.defaultText}
+            cursorColor={terminalAppearance.colors.cursorColor}
             cursorBlinkSpeed={terminalAppearance.terminal.cursorBlinkSpeed}
           />
         )}
 
         {isTyping && (
           <div className="flex items-center">
-            <span style={{ color: terminalAppearance.colors.promptText }}>{terminalAppearance.terminal.prompt}</span>
+            <pre style={{ color: terminalAppearance.colors.promptText, margin: 0 }}>{terminalAppearance.terminal.prompt}</pre>
             <span style={{ color: terminalAppearance.colors.commandText }}>{currentTypingText}</span>
             <span
               className={`h-5 w-2 ml-0.5 ${cursorVisible ? "opacity-100" : "opacity-0"}`}

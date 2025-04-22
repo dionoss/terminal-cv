@@ -13,7 +13,7 @@ export default function TerminalLine({ type, content }: TerminalLineProps) {
       case "boot":
         return null
       case "command":
-        return <span style={{ color: terminalAppearance.colors.promptText }}>{terminalAppearance.terminal.prompt}</span>
+        return <pre style={{ color: terminalAppearance.colors.promptText, margin: 0, display: 'inline' }}>{terminalAppearance.terminal.prompt}</pre>
       case "system":
         return null
       case "error":
